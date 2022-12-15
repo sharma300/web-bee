@@ -1,4 +1,6 @@
 import Event from './entities/event.entity';
+import Workshop from './entities/workshop.entity';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 
 export class EventsService {
@@ -85,7 +87,23 @@ export class EventsService {
      */
 
   async getEventsWithWorkshops() {
-    throw new Error('TODO task 1');
+    try{
+      // let events = await Event.findAll({ })
+      Event.hasMany(Workshop)
+      let events = await Event.findAll({
+        include:Workshop,
+        raw: true
+    })
+
+    console.log(events);
+    return events
+    
+     
+      
+    } catch(e) {
+      throw new Error("error task 1")
+    }
+    // throw new Error('TODO task 1');
   }
 
   /* TODO: complete getFutureEventWithWorkshops so that it returns events with workshops, that have not yet started
@@ -155,6 +173,24 @@ export class EventsService {
     ```
      */
   async getFutureEventWithWorkshops() {
-    throw new Error('TODO task 2');
+    try{
+      // let events = await Event.findAll({ })
+      Event.hasMany(Workshop)
+      let events = await Event.findAll({
+        include:Workshop,
+        where: {start: {
+          $gte: format(new Date(), 'yyyy-mm-dd hh:mm:ss')
+        }},
+        raw: true
+    })
+
+    console.log(events);
+    return events
+    
+     
+      
+    } catch(e) {
+      throw new Error("error task 2")
+    }
   }
 }
